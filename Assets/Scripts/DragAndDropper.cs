@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class DragAndDropper : MonoBehaviour
 {
-    private enum DragStatus { Free, PickUp, Drag, Release }
 
     [SerializeField] private Camera _camera;
     [SerializeField] private LayerMask _draggableLayer;
@@ -12,12 +11,10 @@ public class DragAndDropper : MonoBehaviour
     [SerializeField] private float _rotationIncrement = 45;
 
     private Vector2 _pointerPos;
-    private Vector3 _worldPos;
-    private DragStatus _currentDragStatus;
     private RaycastHit _raycastHit;
-    private Transform _lastHitTransform;
     private Transform _selectedDraggable;
     private Transform _pickedUpDraggable;
+    private Obstacle _pickedUpObstacle;
     private Vector3 _draggableOrigin;
     private Quaternion _draggableOriginRotation;
     private bool _hasRotated;
@@ -45,6 +42,7 @@ public class DragAndDropper : MonoBehaviour
             _hasRotated = true;
         }
 
+
         Ray ray = _camera.ScreenPointToRay(_pointerPos);
 
         if (Physics.Raycast(
@@ -58,7 +56,22 @@ public class DragAndDropper : MonoBehaviour
 
             if (carryingDraggable == true)
             {
+                // Still wanna know where the ray from camera intersects world pos y = 0
+                Plane intersectTestPlane = new (Vector3.up, Vector3.zero);
+                // Create temporary intersection plane
+                Vector3 groundPoint;
+                // This is the point where the ray points, and y == 0
+
+                if (intersectTestPlane.Raycast(ray, out float tempDistance))
+                {
+                    // Get intersection from camera to test plane
+                    groundPoint = ray.GetPoint(tempDistance);
+                    // Then store point where the ray points, and y == 0
+                    _pickedUpDraggable.position = groundPoint;
+                    // And assign position to picked up draggable
+                }
                 // Still dragging something
+
 
                 // Find some way to place indication of draggable location
                 // by calculating intersection of camera ray and camera angle?
@@ -66,14 +79,14 @@ public class DragAndDropper : MonoBehaviour
                 if (_currentLeftClick == false)
                 {
                     // Letting go of object before we could place it
-                    Debug.Log("Nowhere to place \"" + _pickedUpDraggable.name + "\", dropping it to it's origin " + _draggableOrigin);
+                    // Debug.Log("Nowhere to place \"" + _pickedUpDraggable.name + "\", dropping it to it's origin " + _draggableOrigin);
 
                     // Return picked up draggable to whence it came
-                    _pickedUpDraggable.position = _draggableOrigin;
+                    ReturnDraggableToOrigin();
 
                     // Play some effects?
-
-                    _pickedUpDraggable = null;
+                    // _pickedUpObstacle = null;
+                    // _pickedUpDraggable = null;
                 }
             }
 
@@ -94,16 +107,18 @@ public class DragAndDropper : MonoBehaviour
             if (_currentLeftClick == false)
             {
                 // Gotta let go of draggable
-                Debug.Log("Let go of \"" + _pickedUpDraggable.name + "\" and placed it at " + _raycastHit.point);
-                // Reactivate physical collider so player can actually hit it again
-                _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = false;
 
-                // Place draggable effect?
-
-                _pickedUpDraggable = null;
-                _draggableOrigin = Vector3.zero;
+                if (_pickedUpObstacle.CanBePlaced == false)
+                {
+                    // Debug.Log("Draggable \"" + _pickedUpDraggable.name + "\" intersects with another collider, and has been returned to it's origin");
+                    ReturnDraggableToOrigin();
+                }
+                else
+                {
+                    // Debug.Log("Let go of \"" + _pickedUpDraggable.name + "\" and placed it at " + _raycastHit.point);
+                    LetGoOfDraggable();
+                }
             }
-
         }
         else
         {
@@ -120,29 +135,54 @@ public class DragAndDropper : MonoBehaviour
 
                 // Select new one
                 _selectedDraggable = _raycastHit.transform;
-                Debug.Log("Selected \"" + _selectedDraggable.name + "\"");
+                // Debug.Log("Selected \"" + _selectedDraggable.name + "\"");
                 // Play effects
             }
 
             if (_currentLeftClick == true)
             {
                 // Gotta pick up the draggable!
-                Debug.Log("Picked up \"" + _selectedDraggable.name + "\"");
+                // Debug.Log("Picked up \"" + _selectedDraggable.name + "\"");
 
                 // Play pick up effects
 
-                _pickedUpDraggable = _selectedDraggable;
-                _draggableOrigin = _pickedUpDraggable.position;
-                _draggableOriginRotation = _pickedUpDraggable.rotation;
-
-                // Make collider trigger so player will pass through it while dragging
-                _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = true;
-
-                // Play deselect effects?
-
-                _selectedDraggable = null;
+                PickUpDraggable();
             }
         }
+    }
+
+    private void PickUpDraggable()
+    {
+        _pickedUpDraggable = _selectedDraggable;
+        _pickedUpObstacle = _pickedUpDraggable.GetComponent<Obstacle>();
+        _draggableOrigin = _pickedUpDraggable.position;
+        _draggableOriginRotation = _pickedUpDraggable.rotation;
+
+        // Make collider trigger so player will pass through it while dragging
+        _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = true;
+
+        // Play deselect effects?
+
+        _selectedDraggable = null;
+    }
+
+    private void ReturnDraggableToOrigin()
+    {
+        _pickedUpDraggable.position = _draggableOrigin;
+        _pickedUpDraggable.rotation = _draggableOriginRotation;
+
+        LetGoOfDraggable();
+    }
+
+    private void LetGoOfDraggable()
+    {
+        _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = false;
+
+        // Place draggable effect?
+
+        _pickedUpObstacle = null;
+        _pickedUpDraggable = null;
+        _draggableOrigin = Vector3.zero;
     }
 
     private void OnPoint(InputValue pointValue)

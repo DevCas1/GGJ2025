@@ -9,6 +9,8 @@ public class DragAndDropper : MonoBehaviour
     [SerializeField] private LayerMask _draggableLayer;
     [SerializeField] private LayerMask _placeableLayer;
 
+    [SerializeField] private float _rotationIncrement = 45;
+
     private Vector2 _pointerPos;
     private Vector3 _worldPos;
     private DragStatus _currentDragStatus;
@@ -17,6 +19,8 @@ public class DragAndDropper : MonoBehaviour
     private Transform _selectedDraggable;
     private Transform _pickedUpDraggable;
     private Vector3 _draggableOrigin;
+    private Quaternion _draggableOriginRotation;
+    private bool _hasRotated;
 
     private bool _currentLeftClick;
 
@@ -32,6 +36,14 @@ public class DragAndDropper : MonoBehaviour
     private void CheckForObjects()
     {
         bool carryingDraggable = _pickedUpDraggable != null;
+
+        if (carryingDraggable == true && _currentRightClick == true && _hasRotated == false)
+        {
+            // Dragging something and gotta rotate the draggable!
+
+            _pickedUpDraggable.Rotate(new (0, _rotationIncrement, 0));
+            _hasRotated = true;
+        }
 
         Ray ray = _camera.ScreenPointToRay(_pointerPos);
 
@@ -58,7 +70,7 @@ public class DragAndDropper : MonoBehaviour
 
                     // Return picked up draggable to whence it came
                     _pickedUpDraggable.position = _draggableOrigin;
-                    
+
                     // Play some effects?
 
                     _pickedUpDraggable = null;
@@ -83,6 +95,8 @@ public class DragAndDropper : MonoBehaviour
             {
                 // Gotta let go of draggable
                 Debug.Log("Let go of \"" + _pickedUpDraggable.name + "\" and placed it at " + _raycastHit.point);
+                // Reactivate physical collider so player can actually hit it again
+                _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = false;
 
                 // Place draggable effect?
 
@@ -119,8 +133,13 @@ public class DragAndDropper : MonoBehaviour
 
                 _pickedUpDraggable = _selectedDraggable;
                 _draggableOrigin = _pickedUpDraggable.position;
-                _pickedUpDraggable.GetComponent<Collider>().isTrigger = true;
-                
+                _draggableOriginRotation = _pickedUpDraggable.rotation;
+
+                // Make collider trigger so player will pass through it while dragging
+                _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = true;
+
+                // Play deselect effects?
+
                 _selectedDraggable = null;
             }
         }
@@ -157,6 +176,7 @@ public class DragAndDropper : MonoBehaviour
             Debug.LogWarning("_currentRightClick set to the same value it already was!");
 
         _currentRightClick = input;
+        _hasRotated = false;
     }
 
     private void OnMiddleClick(InputValue middleClickValue)

@@ -624,6 +624,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _rotationIncrement: 45
+  _openHandCursor: {fileID: 2800000, guid: a990c31d704f1434dbc8a5a459710189, type: 3}
+  _openHandCursorHotspot: {x: 0, y: 0}
+  _closedHandCursor: {fileID: 2800000, guid: 6bfe751082523e24487ef9fe64e83819, type: 3}
+  _closedHandCursorHotspot: {x: 0, y: 0}
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0

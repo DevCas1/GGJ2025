@@ -3,12 +3,16 @@ using UnityEngine.InputSystem;
 
 public class DragAndDropper : MonoBehaviour
 {
-
+    [Header("Required")]
     [SerializeField] private Camera _camera;
     [SerializeField] private LayerMask _draggableLayer;
     [SerializeField] private LayerMask _placeableLayer;
-
     [SerializeField] private float _rotationIncrement = 45;
+    [Header("Cursor")]
+    [SerializeField] private Texture2D _openHandCursor;
+    [SerializeField] private Vector2 _openHandCursorHotspot = Vector2.zero;
+    [SerializeField] private Texture2D _closedHandCursor;
+    [SerializeField] private Vector2 _closedHandCursorHotspot = Vector2.zero;
 
     private Vector2 _pointerPos;
     private RaycastHit _raycastHit;
@@ -53,6 +57,7 @@ public class DragAndDropper : MonoBehaviour
         ) == false)
         {
             // Not hitting anything
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
             if (carryingDraggable == true)
             {
@@ -123,6 +128,7 @@ public class DragAndDropper : MonoBehaviour
         else
         {
             // Not dragging anything, and hovering over something selectable!
+            Cursor.SetCursor(_openHandCursor, _openHandCursorHotspot, CursorMode.Auto);
 
             if (_raycastHit.transform != _selectedDraggable)
             {
@@ -161,6 +167,8 @@ public class DragAndDropper : MonoBehaviour
         // Make collider trigger so player will pass through it while dragging
         _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = true;
 
+        Cursor.SetCursor(_closedHandCursor, _closedHandCursorHotspot, CursorMode.Auto);
+
         // Play deselect effects?
 
         _selectedDraggable = null;
@@ -183,6 +191,8 @@ public class DragAndDropper : MonoBehaviour
         _pickedUpObstacle = null;
         _pickedUpDraggable = null;
         _draggableOrigin = Vector3.zero;
+
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     private void OnPoint(InputValue pointValue)

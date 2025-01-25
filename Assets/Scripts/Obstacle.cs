@@ -4,9 +4,9 @@ public class Obstacle : MonoBehaviour
 {
     private void Start()
     {
-        Collider collider = GetComponent<Collider>();
+        Collider collider = GetComponentInChildren<Collider>(true);
 
         if (collider == null)
-            Debug.LogError($"Obstacle {transform.name} has no collider, and will therefore not trigger!");
+            Debug.LogError($"Obstacle \"{transform.name}\" nor any of it's children has a collider, obstacle will therefore not trigger!");
     }
 }

@@ -3,41 +3,46 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private Rigidbody _rigidbody;
-    [SerializeField]
-    private float _movementForce = 1;
-    [SerializeField]
-    private float _maxMoveVelocity;
+    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private float _movementForce = 1;
+    [SerializeField] private Transform _hamsterTransform;
+    [SerializeField] private float _hamsterRotationSpeed = 1;
 
-    private Vector2 _movementVector;
+    private Vector2 _inputVector = Vector2.zero;
+    private Quaternion _lookVector;
 
-    private void Start()
+    private void Awake()
     {
-        Debug.Log(
-            $"One directional input vs full input: {new Vector2(1, 0)} vs {new Vector2(1, 1)}\n" +
-            $"sqrMagnitude of both: {new Vector2(1, 0).sqrMagnitude} vs {new Vector2(1, 1).sqrMagnitude}\n" +
-            $"magnitude of both: {new Vector2(1, 0).magnitude} vs {new Vector2(1, 1).magnitude}"
-        );
+        _lookVector = _hamsterTransform.rotation;
+    }
+
+    private void Update()
+    {
+        UpdateHamsterRotation();
+    }
+
+    private void UpdateHamsterRotation()
+    {
+        if (_inputVector.sqrMagnitude > 0)
+        {
+            _lookVector = Quaternion.LookRotation(
+                new Vector3(_inputVector.x, 0, _inputVector.y),
+                Vector3.up
+            );
+        }
+
+        Vector3 newRotationEuler = Quaternion.Slerp(
+            Quaternion.Euler(0, _hamsterTransform.rotation.eulerAngles.y, 0),
+            _lookVector,
+            Time.deltaTime * _hamsterRotationSpeed
+        ).eulerAngles;
+
+        _hamsterTransform.rotation = Quaternion.Euler(0, newRotationEuler.y, 0);
     }
 
     private void FixedUpdate()
     {
-        // Vector3 currentLinearVelocity = _rigidbody.linearVelocity;
-        // Vector3 horizontalVelocity = new (currentLinearVelocity.x, 0, currentLinearVelocity.z);
-        // Vector3 normalizedHorizontalVelocity = horizontalVelocity.normalized;
-        // float currentSqrMagnitude = horizontalVelocity.sqrMagnitude;
-
-        // if (currentSqrMagnitude > _maxMoveVelocity)
-        // {
-        //     _rigidbody.linearVelocity = new Vector3(
-        //         normalizedHorizontalVelocity.x * _maxMoveVelocity,
-        //         currentLinearVelocity.y,
-        //         normalizedHorizontalVelocity.z * _maxMoveVelocity
-        //     );
-        // }
-
-        _rigidbody.AddForce(new Vector3(_movementVector.x, 0, _movementVector.y) * _movementForce);
+        _rigidbody.AddForce(new Vector3(_inputVector.x, 0, _inputVector.y) * _movementForce);
     }
 
     private void OnMove(InputValue movementValue)
@@ -47,6 +52,11 @@ public class PlayerController : MonoBehaviour
         if (input.sqrMagnitude > 1)
             input = input.normalized;
 
-        _movementVector = input;
+        _inputVector = input;
     }
+
+    // private void OnCollisionEnter(Collision col)
+    // {
+
+    // }
 }

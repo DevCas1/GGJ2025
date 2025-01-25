@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [Header("Damage related")]
     [SerializeField] private int _health = 1;
     [SerializeField] private float _damageKnockbackForce = 1;
+    [Tooltip("Beware, this value means the square magnitude of velocity the player needs to surpass to be dangerous.")]
+    [SerializeField] private float _dangerousVelocity = 1;
     [Header("Hamster visuals")]
     [SerializeField] private Transform _hamsterTransform;
     [SerializeField] private float _hamsterRotationSpeed = 1;

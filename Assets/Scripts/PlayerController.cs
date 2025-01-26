@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _movementForce = 1;
     [Header("Damage related")]
     [SerializeField] private int _health = 1;
+    [SerializeField] private float _punchKnockbackForce = 1;
+    [Tooltip("Knockback for when hamster takes damage")]
     [SerializeField] private float _damageKnockbackForce = 1;
     [Tooltip("Beware, this value means the square magnitude of velocity the player needs to surpass to be dangerous.")]
     [SerializeField] private float _dangerousVelocity = 1;
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public UnityEvent OnDeath;
 
     private int _currentHealth;
+    private bool _isDangerous = false;
     private Vector2 _inputVector = Vector2.zero;
     private Quaternion _lookVector;
 
@@ -35,6 +38,12 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateHamsterRotation();
+
+        if (_rigidbody.linearVelocity.sqrMagnitude > _dangerousVelocity)
+        {
+            _isDangerous = true;
+            // Play fire effects
+        }
     }
 
     private void UpdateHamsterRotation()
@@ -79,12 +88,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        if (
-            _rigidbody.linearVelocity.sqrMagnitude > _dangerousVelocity && 
-            col.transform.TryGetComponent<Obstacle>(out var obstacle)
-        )
+        Debug.Log($"Collided with \"{col.transform.name}\". Dangerous: {_isDangerous}. Obstacle: {col.transform.TryGetComponent<Obstacle>(out _)}");
+        if (_isDangerous && col.transform.TryGetComponent<Obstacle>(out var obstacle))
         {
-            obstacle.ReceiveDamage();
+            obstacle.ReceiveDamage(_hamsterTransform.forward);
+            _isDangerous = false;
+            _rigidbody.AddForce(-_hamsterTransform.forward * _punchKnockbackForce, ForceMode.VelocityChange);
+
+            return;
         }
 
         if (col.transform.TryGetComponent<SharpObstacle>(out _))
@@ -109,7 +120,7 @@ public class PlayerController : MonoBehaviour
 
     private void Escape()
     {
-        Vector3 randomDirection = new Vector3(Random.value, 0, Random.value).normalized * 100;
+        Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)).normalized * 100;
 
         Sequence escapeSequence = DOTween.Sequence();
         escapeSequence.Append(_hamsterTransform.DOJump(_hamsterTransform.position, 1, 1, 1));

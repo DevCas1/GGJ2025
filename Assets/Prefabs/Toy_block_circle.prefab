@@ -57,6 +57,10 @@ PrefabInstance:
       value: Toy_block_circle
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b686267cfb9938d498bf66683a940608, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b686267cfb9938d498bf66683a940608, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}

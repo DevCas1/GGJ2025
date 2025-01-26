@@ -456,8 +456,9 @@ MonoBehaviour:
   _rigidbody: {fileID: 2391105946795865101}
   _movementForce: 20
   _health: 3
-  _damageKnockbackForce: 12.5
-  _dangerousVelocity: 1
+  _punchKnockbackForce: 5
+  _damageKnockbackForce: 11
+  _dangerousVelocity: 75
   _hamsterTransform: {fileID: 907321907661865179}
   _hamsterBallTransform: {fileID: 1895293551330697738}
   _hamsterRotationSpeed: 3
@@ -469,7 +470,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

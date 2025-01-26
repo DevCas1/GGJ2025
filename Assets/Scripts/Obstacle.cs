@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Obstacle : MonoBehaviour
@@ -35,19 +36,27 @@ public class Obstacle : MonoBehaviour
         Debug.Log("Dragged Obstacle \"" + name + " exited other object \"" + col.transform.name + "\" and can now be placed!");
     }
 
-    public void ReceiveDamage()
+    public void ReceiveDamage(Vector3 damageDirection)
     {
+        Debug.Log($"Obstacle \"{name}\" received damage");
         _currentHealth--;
 
         if (_currentHealth <= 0)
         {
-            DestroyObstacle();
+            Debug.Log("And got destroyed");
+            DestroyObstacle(damageDirection);
         }
     }
 
-    private void DestroyObstacle()
+    private void DestroyObstacle(Vector3 damageDirection)
     {
         // Destroy effects
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(transform.DOScale(transform.lossyScale * 1.2f, 0.1f));
+        sequence.Append(transform.DOScale(Vector3.zero, 0.25f));
+
+        transform.DOPunchPosition(damageDirection.normalized * 0.5f, 0.5f, 0, 0);
+        sequence.Play().OnComplete(() => DestroyImmediate(this));
 
         Destroy(this);
     }

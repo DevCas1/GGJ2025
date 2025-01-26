@@ -6,7 +6,6 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Required")]
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _movementForce = 1;
     [Header("Damage related")]
@@ -16,7 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _damageKnockbackForce = 1;
     [Tooltip("Beware, this value means the square magnitude of velocity the player needs to surpass to be able to punch obstacles.")]
     [SerializeField] private float _dangerousVelocity = 1;
-    [Header("Stamina"), Tooltip("Stamina in seconds")]
+    [Header("Stamina")]
+    [SerializeField] private RectTransform _staminaRectTransform;
+    [Tooltip("Stamina in seconds")]
     [SerializeField] private float _stamina = 60;
     [Header("Hamster visuals")]
     [SerializeField] private Transform _hamsterTransform;
@@ -25,6 +26,10 @@ public class PlayerController : MonoBehaviour
     [Header("Unity Events")]
     public UnityEvent OnDamageTaken;
     public UnityEvent OnDeath;
+    public UnityEvent OnGameOver;
+
+    private readonly float _staminaRectTopMax = 0;
+    private readonly float _staminaRectTopMin = -851;
 
     private int _currentHealth;
     private float _currentStamina;
@@ -50,6 +55,19 @@ public class PlayerController : MonoBehaviour
         }
 
         _currentStamina -= Time.deltaTime;
+        _staminaRectTransform.anchoredPosition = new Vector2(
+            0,
+            Mathf.Lerp(
+                _staminaRectTopMin,
+                _staminaRectTopMax,
+                _currentStamina / _stamina
+            )
+        );
+
+        if (_currentStamina <= 0)
+        {
+            GameOver();
+        }
     }
 
     private void UpdateHamsterRotation()
@@ -113,6 +131,7 @@ public class PlayerController : MonoBehaviour
     private void ReceiveDamage()
     {
         _currentHealth--;
+        OnDamageTaken.Invoke();
         Debug.Log("Receiving Damage! Current health: " + _currentHealth);
 
         if (_currentHealth <= 0)
@@ -139,6 +158,13 @@ public class PlayerController : MonoBehaviour
         escapeSequence.Play();
 
         OnDeath.Invoke();
+        this.enabled = false;
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("Hamster is worn out!");
+        OnGameOver.Invoke();
         this.enabled = false;
     }
 }

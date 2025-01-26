@@ -6,8 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestScene.unity
+    path: Assets/Scenes/Title.unity
+    guid: 71929e7e993b40d458d22eec9df61ba9
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/HamsterWon.unity
+    guid: fad94a1d5093b544fb87c9af35ab85ce
+  - enabled: 1
+    path: Assets/Scenes/HamsterLost.unity
+    guid: d41b95984ccd60b4c85016f9f687e693
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

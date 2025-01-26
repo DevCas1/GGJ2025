@@ -90,8 +90,6 @@ public class DragAndDropper : MonoBehaviour
                     ReturnDraggableToOrigin();
 
                     // Play some effects?
-                    // _pickedUpObstacle = null;
-                    // _pickedUpDraggable = null;
                 }
             }
 

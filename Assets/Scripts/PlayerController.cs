@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
+using DG.Tweening;
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Required")]
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _dangerousVelocity = 1;
     [Header("Hamster visuals")]
     [SerializeField] private Transform _hamsterTransform;
+    [SerializeField] private GameObject _hamsterBallTransform;
     [SerializeField] private float _hamsterRotationSpeed = 1;
     [Header("Unity Events")]
     public UnityEvent OnDamageTaken;
@@ -76,7 +79,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        if (col.transform.TryGetComponent<SharpObstacle>(out SharpObstacle sharpObstacle))
+        if (
+            _rigidbody.linearVelocity.sqrMagnitude > _dangerousVelocity && 
+            col.transform.TryGetComponent<Obstacle>(out var obstacle)
+        )
+        {
+            obstacle.ReceiveDamage();
+        }
+
+        if (col.transform.TryGetComponent<SharpObstacle>(out _))
         {
             ReceiveDamage();
         }
@@ -89,16 +100,27 @@ public class PlayerController : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
-            Death();
+            Escape();
             return;
         }
 
         _rigidbody.AddForce(-_hamsterTransform.forward * _damageKnockbackForce, ForceMode.VelocityChange);
     }
 
-    private void Death()
+    private void Escape()
     {
-        Debug.Log("Death");
+        Vector3 randomDirection = new Vector3(Random.value, 0, Random.value).normalized * 100;
+
+        Sequence escapeSequence = DOTween.Sequence();
+        escapeSequence.Append(_hamsterTransform.DOJump(_hamsterTransform.position, 1, 1, 1));
+        escapeSequence.Append(_hamsterTransform.DOLookAt(randomDirection, 0.2f));
+        escapeSequence.Append(_hamsterTransform.DOMove(randomDirection, 10));
+
+        Debug.Log("Hamster escaped!");
+        _rigidbody.isKinematic = true;
+        _hamsterBallTransform.SetActive(false);
+        escapeSequence.Play();
+
         OnDeath.Invoke();
         this.enabled = false;
     }

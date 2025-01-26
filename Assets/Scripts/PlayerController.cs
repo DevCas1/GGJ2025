@@ -14,8 +14,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _punchKnockbackForce = 1;
     [Tooltip("Knockback for when hamster takes damage")]
     [SerializeField] private float _damageKnockbackForce = 1;
-    [Tooltip("Beware, this value means the square magnitude of velocity the player needs to surpass to be dangerous.")]
+    [Tooltip("Beware, this value means the square magnitude of velocity the player needs to surpass to be able to punch obstacles.")]
     [SerializeField] private float _dangerousVelocity = 1;
+    [Header("Stamina"), Tooltip("Stamina in seconds")]
+    [SerializeField] private float _stamina = 60;
     [Header("Hamster visuals")]
     [SerializeField] private Transform _hamsterTransform;
     [SerializeField] private GameObject _hamsterBallTransform;
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public UnityEvent OnDeath;
 
     private int _currentHealth;
+    private float _currentStamina;
     private bool _isDangerous = false;
     private Vector2 _inputVector = Vector2.zero;
     private Quaternion _lookVector;
@@ -32,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _currentHealth = _health;
+        _currentStamina = _stamina;
         _lookVector = _hamsterTransform.rotation;
     }
 
@@ -44,6 +48,8 @@ public class PlayerController : MonoBehaviour
             _isDangerous = true;
             // Play fire effects
         }
+
+        _currentStamina -= Time.deltaTime;
     }
 
     private void UpdateHamsterRotation()

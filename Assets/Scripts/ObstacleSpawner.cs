@@ -31,7 +31,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void SpawnObstacle()
     {
-        var newObstacle = Instantiate(_spawnableObstacles[Random.Range(0, _spawnableObstacles.Length - 1)]);
+        var newObstacle = Instantiate(_spawnableObstacles[Random.Range(0, _spawnableObstacles.Length)]);
 
         newObstacle.transform.SetPositionAndRotation(
             _spawnLocations[_spawnLocationIndex].position, 

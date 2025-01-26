@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     public UnityEvent OnGameOver;
 
     private readonly float _staminaRectTopMax = 0;
-    private readonly float _staminaRectTopMin = -851;
+    private readonly float _staminaRectTopMin = -600;
 
     private int _currentHealth;
     private float _currentStamina;
@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
         Debug.Log($"Collided with \"{col.transform.name}\". Dangerous: {_isDangerous}. Obstacle: {col.transform.TryGetComponent<Obstacle>(out _)}");
+
         if (_isDangerous && col.transform.TryGetComponent<Obstacle>(out var obstacle))
         {
             obstacle.ReceiveDamage(_hamsterTransform.forward);
@@ -122,9 +123,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (col.transform.TryGetComponent<SharpObstacle>(out _))
+        if (col.transform.TryGetComponent<SharpObstacle>(out var sharpObstacle))
         {
             ReceiveDamage();
+            sharpObstacle.ReceiveDamage(_hamsterTransform.forward);
         }
     }
 

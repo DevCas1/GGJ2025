@@ -16,16 +16,16 @@ public class ObstacleSpawner : MonoBehaviour
     private void Start()
     {
         for (int index = 0; index < StartingAmount; index++)
-        {
             SpawnObstacle();
-        }
+
+        _currentSpawnTimer = _spawnTimer;
     }
 
     private void Update()
     {
-        _currentSpawnTimer += Time.deltaTime;
+        _currentSpawnTimer -= Time.deltaTime;
 
-        if (_currentSpawnTimer >= _spawnTimer)
+        if (_currentSpawnTimer <= 0)
             SpawnObstacle();
     }
 
@@ -43,6 +43,6 @@ public class ObstacleSpawner : MonoBehaviour
         else
             _spawnLocationIndex++;
 
-        _currentSpawnTimer = 0;
+        _currentSpawnTimer = _spawnTimer;
     }
 }

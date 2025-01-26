@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     [Header("Stamina")]
     [SerializeField] private RectTransform _staminaRectTransform;
     [Tooltip("Stamina in seconds")]
-    [SerializeField] private float _stamina = 60;
+    [SerializeField] private float _maxStamina = 60;
     [Header("Hamster visuals")]
     [SerializeField] private Transform _hamsterTransform;
     [SerializeField] private GameObject _hamsterBallTransform;
@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _currentHealth = _health;
-        _currentStamina = _stamina;
+        _currentStamina = _maxStamina;
         _lookVector = _hamsterTransform.rotation;
     }
 
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
             Mathf.Lerp(
                 _staminaRectTopMin,
                 _staminaRectTopMax,
-                _currentStamina / _stamina
+                _currentStamina / _maxStamina
             )
         );
 
@@ -110,10 +110,20 @@ public class PlayerController : MonoBehaviour
         _inputVector = input;
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.TryGetComponent<StaminaPickup>(out var pickup))
+        {
+            _currentStamina = (_currentStamina + pickup.StaminaRegainAmount) > _maxStamina ?
+                _maxStamina :
+                _currentStamina + pickup.StaminaRegainAmount;
+
+            pickup.PickedUp();
+        }
+    }
+
     private void OnCollisionEnter(Collision col)
     {
-        Debug.Log($"Collided with \"{col.transform.name}\". Dangerous: {_isDangerous}. Obstacle: {col.transform.TryGetComponent<Obstacle>(out _)}");
-
         if (_isDangerous && col.transform.TryGetComponent<Obstacle>(out var obstacle))
         {
             obstacle.ReceiveDamage(_hamsterTransform.forward);
@@ -134,7 +144,6 @@ public class PlayerController : MonoBehaviour
     {
         _currentHealth--;
         OnDamageTaken.Invoke();
-        Debug.Log("Receiving Damage! Current health: " + _currentHealth);
 
         if (_currentHealth <= 0)
         {

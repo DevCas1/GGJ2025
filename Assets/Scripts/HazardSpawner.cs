@@ -4,7 +4,7 @@ public class HazardSpawner : MonoBehaviour
 {
     public int StartingAmount = 1;
 
-    private Vector2 _spawnSafeZone = new (7.5f, 7.5f);
+    [SerializeField] private Vector2 _spawnSafeZone = new (7.5f, 7.5f);
     [SerializeField] private GameObject[] _spawnableHazards;
     [SerializeField] private float _spawnTimer = 7.5f;
 
@@ -15,16 +15,16 @@ public class HazardSpawner : MonoBehaviour
     private void Start()
     {
         for (int index = 0; index < StartingAmount; index++)
-        {
             SpawnHazard();
-        }
+
+        _currentSpawnTimer = _spawnTimer;
     }
 
     private void Update()
     {
-        _currentSpawnTimer += Time.deltaTime;
+        _currentSpawnTimer -= Time.deltaTime;
 
-        if (_currentSpawnTimer >= _spawnTimer)
+        if (_currentSpawnTimer <= 0)
             SpawnHazard();
     }
 
@@ -43,6 +43,6 @@ public class HazardSpawner : MonoBehaviour
                 0)
         );
 
-        _currentSpawnTimer = 0;
+        _currentSpawnTimer = _spawnTimer;
     }
 }

@@ -19,12 +19,10 @@ public class SharpObstacle : MonoBehaviour
 
     public void ReceiveDamage(Vector3 damageDirection)
     {
-        Debug.Log($"Obstacle \"{name}\" received damage");
         _currentHealth--;
 
         if (_currentHealth <= 0)
         {
-            Debug.Log("And got destroyed");
             DestroyObstacle(damageDirection);
         }
     }

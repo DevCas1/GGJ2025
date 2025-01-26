@@ -515,6 +515,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242131384}
   m_CullTransparentMesh: 1
+--- !u!1 &321661968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 321661969}
+  - component: {fileID: 321661970}
+  m_Layer: 0
+  m_Name: PickkupSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &321661969
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321661968}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &321661970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321661968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ddf8bfe45822224384fd0f4c3d657ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartingAmount: 0
+  _spawnSafeZone: {x: 8.5, y: 8.5}
+  _spawnablePickups:
+  - {fileID: 7704673909337486826, guid: 22fecfc72f310284cbce7aadd7d4289e, type: 3}
+  _spawnTimer: 10
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2036,10 +2085,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingAmount: 1
+  _spawnSafeZone: {x: 7.5, y: 7.5}
   _spawnableHazards:
   - {fileID: 1557359667321419818, guid: 2bdc0ef2a2fc14c4581d45d70280b6d9, type: 3}
   - {fileID: 8074801274818650139, guid: 89bc4ed8745965f4ba4e924a40431411, type: 3}
-  _spawnTimer: 6
+  _spawnTimer: 10
 --- !u!1001 &1977346209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2427,28 +2477,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
-      propertyPath: _health
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
-      propertyPath: _stamina
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
-      propertyPath: _movementForce
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
-      propertyPath: _dangerousVelocity
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
-      propertyPath: _punchKnockbackForce
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
-      propertyPath: _damageKnockbackForce
-      value: 15
+      propertyPath: _maxStamina
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: _staminaRectTransform
@@ -2462,10 +2492,6 @@ PrefabInstance:
       propertyPath: OnGameOver.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1304495592}
-    - target: {fileID: 2391105946795865101, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
-      propertyPath: m_Drag
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4485635804875802918, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2530,3 +2556,4 @@ SceneRoots:
   - {fileID: 1717920549}
   - {fileID: 1802390090}
   - {fileID: 331459148}
+  - {fileID: 321661969}

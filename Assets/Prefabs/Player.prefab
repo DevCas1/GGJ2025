@@ -460,7 +460,7 @@ MonoBehaviour:
   _damageKnockbackForce: 15
   _dangerousVelocity: 80
   _staminaRectTransform: {fileID: 0}
-  _stamina: 60
+  _maxStamina: 30
   _hamsterTransform: {fileID: 907321907661865179}
   _hamsterBallTransform: {fileID: 1895293551330697738}
   _hamsterRotationSpeed: 3

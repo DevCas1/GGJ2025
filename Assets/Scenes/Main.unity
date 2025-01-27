@@ -221,7 +221,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 330585545}
-  m_PlaneDistance: 15.55
+  m_PlaneDistance: 18
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -355,7 +355,7 @@ Transform:
   m_GameObject: {fileID: 188503764}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: -10.05}
+  m_LocalPosition: {x: 0, y: 1, z: -10.15}
   m_LocalScale: {x: 0.1, y: 3, z: 21}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -413,7 +413,7 @@ Transform:
   m_GameObject: {fileID: 232325726}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 10.05}
+  m_LocalPosition: {x: 0, y: 1, z: 10}
   m_LocalScale: {x: 0.1, y: 3, z: 21}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -653,7 +653,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -8}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -913,7 +913,7 @@ Transform:
   m_GameObject: {fileID: 331459147}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1282,7 +1282,7 @@ Transform:
   m_GameObject: {fileID: 727314505}
   serializedVersion: 2
   m_LocalRotation: {x: 0.43287244, y: 0, z: 0, w: 0.90145516}
-  m_LocalPosition: {x: 0.96, y: 0, z: -0.08}
+  m_LocalPosition: {x: 0.96, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2084,7 +2084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd5cfa6718048f47b634fb443d6261e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingAmount: 1
+  StartingAmount: 0
   _spawnSafeZone: {x: 7.5, y: 7.5}
   _spawnableHazards:
   - {fileID: 1557359667321419818, guid: 2bdc0ef2a2fc14c4581d45d70280b6d9, type: 3}
@@ -2255,7 +2255,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.1, z: 0}
-  m_LocalScale: {x: 20, y: 0.1, z: 20}
+  m_LocalScale: {x: 20, y: 0.1, z: 23}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1477668004}
@@ -2478,7 +2478,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: _maxStamina
-      value: 20
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+      propertyPath: _dashCooldown
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: _staminaRectTransform

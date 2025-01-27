@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StaminaRegainAmount: 10
+  DespawnTime: 10
 --- !u!114 &684351243316583109
 MonoBehaviour:
   m_ObjectHideFlags: 0

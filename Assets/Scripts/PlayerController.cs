@@ -13,12 +13,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _punchKnockbackForce = 1;
     [Tooltip("Knockback for when hamster takes damage")]
     [SerializeField] private float _damageKnockbackForce = 1;
-    [Tooltip("Beware, this value means the square magnitude of velocity the player needs to surpass to be able to punch obstacles.")]
-    [SerializeField] private float _dangerousVelocity = 1;
+    // [Tooltip("Beware, this value means the square magnitude of velocity the player needs to surpass to be able to punch obstacles.")]
+    // [SerializeField] private float _dangerousVelocity = 1;
     [Header("Stamina")]
     [SerializeField] private RectTransform _staminaRectTransform;
     [Tooltip("Stamina in seconds")]
     [SerializeField] private float _maxStamina = 60;
+    [SerializeField] private float _staminaBarLerpSpeed = 1;
+    [Header("Dash")]
+    [SerializeField] private float _dashForce = 1;
+    [SerializeField] private float _dashEnergyConsumption;
+    [SerializeField] private float _dashCooldown;
+    [SerializeField] private float _dangerousDuration = 1;
     [Header("Hamster visuals")]
     [SerializeField] private Transform _hamsterTransform;
     [SerializeField] private GameObject _hamsterBallTransform;
@@ -33,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
     private int _currentHealth;
     private float _currentStamina;
+    private float _dashCooldownTimer;
+    private float _dangerousTimer;
     private bool _isDangerous = false;
     private Vector2 _inputVector = Vector2.zero;
     private Quaternion _lookVector;
@@ -42,32 +50,27 @@ public class PlayerController : MonoBehaviour
         _currentHealth = _health;
         _currentStamina = _maxStamina;
         _lookVector = _hamsterTransform.rotation;
+        _staminaRectTransform.anchoredPosition = new Vector2(0, _staminaRectTopMin);
     }
 
     private void Update()
     {
         UpdateHamsterRotation();
 
-        if (_rigidbody.linearVelocity.sqrMagnitude > _dangerousVelocity)
-        {
-            _isDangerous = true;
-            // Play fire effects
-        }
+        // if (_rigidbody.linearVelocity.sqrMagnitude > _dangerousVelocity)
+        // {
+        //     _isDangerous = true;
+        //     // Play fire effects
+        // }
 
-        _currentStamina -= Time.deltaTime;
-        _staminaRectTransform.anchoredPosition = new Vector2(
-            0,
-            Mathf.Lerp(
-                _staminaRectTopMin,
-                _staminaRectTopMax,
-                _currentStamina / _maxStamina
-            )
-        );
+        UpdateTimers();
+        UpdateStaminaVisuals();
+
+        if (_dangerousTimer <= 0)
+            DisableDangerous();
 
         if (_currentStamina <= 0)
-        {
             GameOver();
-        }
     }
 
     private void UpdateHamsterRotation()
@@ -87,6 +90,42 @@ public class PlayerController : MonoBehaviour
         ).eulerAngles;
 
         _hamsterTransform.rotation = Quaternion.Euler(0, newRotationEuler.y, 0);
+    }
+
+    private void UpdateTimers()
+    {
+        float deltaTime = Time.deltaTime;
+
+        _currentStamina -= deltaTime;
+
+        if (_dashCooldownTimer > 0)
+            _dashCooldownTimer -= deltaTime;
+
+        if (_dangerousTimer > 0)
+            _dangerousTimer -= deltaTime;
+    }
+
+    void UpdateStaminaVisuals()
+    {
+        _staminaRectTransform.anchoredPosition = new Vector2(
+                    0,
+                    Mathf.Lerp(
+                        _staminaRectTransform.anchoredPosition.y,
+                        Mathf.Lerp(
+                            _staminaRectTopMin,
+                            _staminaRectTopMax,
+                            _currentStamina / _maxStamina
+                        ),
+                        Time.deltaTime * _staminaBarLerpSpeed
+                    )
+                );
+    }
+
+    private void DisableDangerous()
+    {
+        _isDangerous = false;
+
+        // Stop dangerous effects
     }
 
     private void FixedUpdate()
@@ -110,6 +149,30 @@ public class PlayerController : MonoBehaviour
         _inputVector = input;
     }
 
+    private void OnDash()
+    {
+        if (_dashCooldownTimer > 0)
+            return;
+
+        _dashCooldownTimer = _dashCooldown;
+        _dangerousTimer = _dangerousDuration;
+        _currentStamina -= _dashEnergyConsumption;
+        _isDangerous = true;
+
+        Vector3 dashVector;
+
+        if (_rigidbody.linearVelocity.sqrMagnitude > 0.1f)
+            dashVector = _rigidbody.linearVelocity.normalized;
+        else
+            dashVector = _hamsterTransform.forward.normalized;
+
+        dashVector.y = 0;
+
+        _rigidbody.AddForce(dashVector * _dashForce, ForceMode.VelocityChange);
+
+        // Play dangerous effects
+    }
+
     private void OnTriggerEnter(Collider col)
     {
         if (col.TryGetComponent<StaminaPickup>(out var pickup))
@@ -126,15 +189,16 @@ public class PlayerController : MonoBehaviour
     {
         if (_isDangerous && col.transform.TryGetComponent<Obstacle>(out var obstacle))
         {
+            DisableDangerous();
             obstacle.ReceiveDamage(_hamsterTransform.forward);
-            _isDangerous = false;
             _rigidbody.AddForce(-_hamsterTransform.forward * _punchKnockbackForce, ForceMode.VelocityChange);
 
             return;
         }
 
-        if (col.transform.TryGetComponent<SharpObstacle>(out var sharpObstacle))
+        if (_isDangerous && col.transform.TryGetComponent<SharpObstacle>(out var sharpObstacle))
         {
+            DisableDangerous();
             ReceiveDamage();
             sharpObstacle.ReceiveDamage(_hamsterTransform.forward);
         }
@@ -156,19 +220,36 @@ public class PlayerController : MonoBehaviour
 
     private void Escape()
     {
-        Vector3 randomDirection = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)).normalized * 100;
+        Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized * 30;
 
         Sequence escapeSequence = DOTween.Sequence();
-        escapeSequence.Append(_hamsterTransform.DOJump(_hamsterTransform.position, 1, 1, 1));
+        escapeSequence.Append(_hamsterTransform.DOJump(
+            _hamsterTransform.position - (_hamsterTransform.forward * 2),
+            2.5f,
+            1,
+            0.66f
+        ));
+        // escapeSequence.Append(_hamsterTransform.DOJump(
+        //     _hamsterTransform.position - (_hamsterTransform.forward * 3.5f),
+        //     1.5f,
+        //     1,
+        //     0.33f
+        // ));
+        // escapeSequence.Append(_hamsterTransform.DOJump(
+        //     _hamsterTransform.position - (_hamsterTransform.forward * 5),
+        //     1,
+        //     1,
+        //     0.2f
+        // ));
         escapeSequence.Append(_hamsterTransform.DOLookAt(randomDirection, 0.2f));
-        escapeSequence.Append(_hamsterTransform.DOMove(randomDirection, 10));
+        escapeSequence.Append(_hamsterTransform.DOMove(randomDirection, 3));
 
         Debug.Log("Hamster escaped!");
         _rigidbody.isKinematic = true;
         _hamsterBallTransform.SetActive(false);
-        escapeSequence.Play();
+        escapeSequence.Play().OnComplete(() => OnDeath.Invoke());
 
-        OnDeath.Invoke();
+        // OnDeath.Invoke();
         this.enabled = false;
     }
 

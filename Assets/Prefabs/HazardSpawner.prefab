@@ -49,4 +49,4 @@ MonoBehaviour:
   _spawnableHazards:
   - {fileID: 1557359667321419818, guid: 2bdc0ef2a2fc14c4581d45d70280b6d9, type: 3}
   - {fileID: 8074801274818650139, guid: 89bc4ed8745965f4ba4e924a40431411, type: 3}
-  _spawnTimer: 10
+  _spawnTimer: 12

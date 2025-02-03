@@ -57,6 +57,10 @@ PrefabInstance:
       value: Spike bar
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0be6e503fa43cfa4197407a55ea518e0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0be6e503fa43cfa4197407a55ea518e0, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -88,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26e635c671ffed4ea445ffa4ccb7957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health: 1
 --- !u!136 &2872483483852866979
 CapsuleCollider:
   m_ObjectHideFlags: 0

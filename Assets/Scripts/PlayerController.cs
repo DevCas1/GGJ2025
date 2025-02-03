@@ -25,10 +25,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _dashEnergyConsumption;
     [SerializeField] private float _dashCooldown;
     [SerializeField] private float _dangerousDuration = 1;
-    [Header("Hamster visuals")]
+    [Header("Hamster Visuals")]
     [SerializeField] private Transform _hamsterTransform;
     [SerializeField] private GameObject _hamsterBallTransform;
     [SerializeField] private float _hamsterRotationSpeed = 1;
+    [Header("Dust related")]
+    [SerializeField] private ParticleSystem _dustParticleSystem;
+    [SerializeField] private LayerMask _groundLayer;
+    // [SerializeField] private float _maxSpeed;
+    // [Tooltip(
+    //     "The amount of dust particle emissions over distance when hamster reaches max speed.\n"+
+    //     "Result wil interpolate between 0 and max, given current speed."
+    // )]
+    // [SerializeField] private float _emissionAtMaxSpeed;
     [Header("Unity Events")]
     public UnityEvent OnDamageTaken;
     public UnityEvent OnDeath;
@@ -37,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private readonly float _staminaRectTopMax = 0;
     private readonly float _staminaRectTopMin = -600;
 
+    private bool _isGrounded = false;
     private int _currentHealth;
     private float _currentStamina;
     private float _dashCooldownTimer;
@@ -126,6 +136,7 @@ public class PlayerController : MonoBehaviour
         _isDangerous = false;
 
         // Stop dangerous effects
+        _dustParticleSystem.Stop();
     }
 
     private void FixedUpdate()
@@ -171,6 +182,7 @@ public class PlayerController : MonoBehaviour
         _rigidbody.AddForce(dashVector * _dashForce, ForceMode.VelocityChange);
 
         // Play dangerous effects
+        _dustParticleSystem.Play();
     }
 
     private void OnTriggerEnter(Collider col)
@@ -187,21 +199,43 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
+        if (CheckIfLayerInLayerMask(col.gameObject.layer, _groundLayer))
+        {
+            SetGrounded(true);
+            return;
+        }
+
         if (_isDangerous && col.transform.TryGetComponent<Obstacle>(out var obstacle))
         {
             DisableDangerous();
             obstacle.ReceiveDamage(_hamsterTransform.forward);
             _rigidbody.AddForce(-_hamsterTransform.forward * _punchKnockbackForce, ForceMode.VelocityChange);
-
-            return;
         }
-
-        if (_isDangerous && col.transform.TryGetComponent<SharpObstacle>(out var sharpObstacle))
+        else if (_isDangerous && col.transform.TryGetComponent<SharpObstacle>(out var sharpObstacle))
         {
             DisableDangerous();
             ReceiveDamage();
             sharpObstacle.ReceiveDamage(_hamsterTransform.forward);
         }
+    }
+
+    private void OnCollisionExit(Collision col)
+    {
+        if (CheckIfLayerInLayerMask(col.gameObject.layer, _groundLayer))
+        {
+            SetGrounded(false);
+            return;
+        }
+    }
+
+    // Some weird stuff with bits and layers, from https://discussions.unity.com/t/check-if-layer-is-in-layermask/16007/5
+    private bool CheckIfLayerInLayerMask(int layer, LayerMask layerMask) => (layerMask & (1 << layer)) != 0;
+
+    private void SetGrounded(bool grounded)
+    {
+        _isGrounded = grounded;
+
+        // Potential effects for when becoming grounded
     }
 
     private void ReceiveDamage()

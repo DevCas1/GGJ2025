@@ -1901,6 +1901,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7051979738914570670, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: Keyboard&Mouse
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051979738914570670, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+      propertyPath: m_NeverAutoSwitchControlSchemes
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7864739829938931487, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: m_Name
       value: Player

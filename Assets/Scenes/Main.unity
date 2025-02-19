@@ -329,6 +329,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124375113}
   m_CullTransparentMesh: 1
+--- !u!198 &165217126 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2569101198376090765, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+  m_PrefabInstance: {fileID: 2021160233607413196}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &188503764
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,6 +798,11 @@ MonoBehaviour:
   TextRectTransform: {fileID: 0}
   SizeAmplifier: 1.5
   AnimationSpeed: 0
+--- !u!4 &761713311 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 907321907661865179, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+  m_PrefabInstance: {fileID: 2021160233607413196}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,6 +1037,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 708864811192002383, guid: 77499d38b42f3a34b878bb531fc04a99, type: 3}
   m_PrefabInstance: {fileID: 1152501807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1226409319 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1895293551330697738, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+  m_PrefabInstance: {fileID: 2021160233607413196}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1299559189
 PrefabInstance:
@@ -1354,6 +1369,87 @@ Transform:
   - {fileID: 2030589541}
   m_Father: {fileID: 1477668004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1703555544
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1521406935684336996, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3534372841758682491, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: _hamsterTransform
+      value: 
+      objectReference: {fileID: 761713311}
+    - target: {fileID: 3534372841758682491, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: _dustParticleSystem
+      value: 
+      objectReference: {fileID: 165217126}
+    - target: {fileID: 3534372841758682491, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: _hamsterBallTransform
+      value: 
+      objectReference: {fileID: 1226409319}
+    - target: {fileID: 3534372841758682491, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: _staminaRectTransform
+      value: 
+      objectReference: {fileID: 124375114}
+    - target: {fileID: 3534372841758682491, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1304495592}
+    - target: {fileID: 3534372841758682491, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: OnGameOver.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1304495592}
+    - target: {fileID: 5077836374661579613, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
+      propertyPath: m_Name
+      value: Player With New Transparent Ball
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 975a634b65948be4dbcc8613a67b343f, type: 3}
 --- !u!1 &1717920546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,7 +1999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7051979738914570670, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: m_DefaultControlScheme
-      value: Keyboard&Mouse
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7051979738914570670, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: m_NeverAutoSwitchControlSchemes
@@ -1912,6 +2008,10 @@ PrefabInstance:
     - target: {fileID: 7864739829938931487, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7864739829938931487, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2103,6 +2203,7 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 8803189235921596365}
   - {fileID: 2021160233607413196}
+  - {fileID: 1703555544}
   - {fileID: 1489939421}
   - {fileID: 109888152}
   - {fileID: 1717920549}

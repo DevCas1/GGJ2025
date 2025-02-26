@@ -11,13 +11,21 @@ PrefabInstance:
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: _hamsterTransform
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2867181097886614681}
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: _dustParticleSystem
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 646958818418112719}
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: _hamsterBallTransform
+      value: 
+      objectReference: {fileID: 3535427973962606152}
+    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+      propertyPath: OnGameOver.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4485635804875802918, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
@@ -77,3 +85,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+--- !u!198 &646958818418112719 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2569101198376090765, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+  m_PrefabInstance: {fileID: 3124709189140776002}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2867181097886614681 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 907321907661865179, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+  m_PrefabInstance: {fileID: 3124709189140776002}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3535427973962606152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1895293551330697738, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+  m_PrefabInstance: {fileID: 3124709189140776002}
+  m_PrefabAsset: {fileID: 0}

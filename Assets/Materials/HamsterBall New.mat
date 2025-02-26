@@ -119,8 +119,8 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Fade_inner: 0.03
-    - _Fade_outer: 0.242
+    - _Fade_inner: 0
+    - _Fade_outer: 0.483
     - _Fresnel_Power: 3
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -139,12 +139,14 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _Texture_Fade_Strength: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Grayscale_Vector: {r: 0.299, g: 0.587, b: 0.114, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

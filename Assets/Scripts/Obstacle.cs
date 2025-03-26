@@ -4,6 +4,7 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     public bool CanBePlaced => _canBePlaced;
+    public ObstacleSpawner Spawner;
 
     [SerializeField] private int _health = 1;
 
@@ -18,6 +19,11 @@ public class Obstacle : MonoBehaviour
             Debug.LogError($"Obstacle \"{transform.name}\" nor any of it's children has a collider, obstacle will therefore not trigger!");
         
         _currentHealth = _health;
+    }
+
+    public void OnObstaclePlaced()
+    {
+        Spawner.OnObstaclePlaced(this);
     }
 
     private void OnTriggerEnter(Collider col)

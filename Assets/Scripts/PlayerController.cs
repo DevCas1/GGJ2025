@@ -40,11 +40,13 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] private float _emissionAtMaxSpeed;
     [Header("Unity Events")]
     public UnityEvent OnDamageTaken;
-    public UnityEvent OnDeath;
+    public UnityEvent OnWin;
+    public UnityEvent GameEnd;
     public UnityEvent OnGameOver;
 
-    private readonly float _staminaRectTopMax = 0;
-    private readonly float _staminaRectTopMin = -600;
+    private Vector2 _staminaRectOriginalPos;
+    // private readonly float _staminaRectTopMax = 25;
+    private readonly float _staminaRectTopMin = -666;
 
     private bool _isGrounded = false;
     private int _currentHealth;
@@ -60,7 +62,8 @@ public class PlayerController : MonoBehaviour
         _currentHealth = _health;
         _currentStamina = _maxStamina;
         _lookVector = _hamsterTransform.rotation;
-        _staminaRectTransform.anchoredPosition = new Vector2(0, _staminaRectTopMin);
+        _staminaRectOriginalPos = _staminaRectTransform.anchoredPosition;
+        _staminaRectTransform.anchoredPosition = new Vector2(_staminaRectOriginalPos.x, _staminaRectTopMin);
     }
 
     private void Update()
@@ -118,17 +121,17 @@ public class PlayerController : MonoBehaviour
     void UpdateStaminaVisuals()
     {
         _staminaRectTransform.anchoredPosition = new Vector2(
-                    0,
-                    Mathf.Lerp(
-                        _staminaRectTransform.anchoredPosition.y,
-                        Mathf.Lerp(
-                            _staminaRectTopMin,
-                            _staminaRectTopMax,
-                            _currentStamina / _maxStamina
-                        ),
-                        Time.deltaTime * _staminaBarLerpSpeed
-                    )
-                );
+            _staminaRectOriginalPos.x,
+            Mathf.Lerp(
+                _staminaRectTransform.anchoredPosition.y,
+                Mathf.Lerp(
+                    _staminaRectTopMin,
+                    _staminaRectOriginalPos.y,
+                    _currentStamina / _maxStamina
+                ),
+                Time.deltaTime * _staminaBarLerpSpeed
+            )
+        );
     }
 
     private void DisableDangerous()
@@ -254,6 +257,8 @@ public class PlayerController : MonoBehaviour
 
     private void Escape()
     {
+        OnWin.Invoke();
+
         Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized * 30;
 
         Sequence escapeSequence = DOTween.Sequence();
@@ -281,7 +286,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Hamster escaped!");
         _rigidbody.isKinematic = true;
         _hamsterBallTransform.SetActive(false);
-        escapeSequence.Play().OnComplete(() => OnDeath.Invoke());
+        escapeSequence.Play().OnComplete(() => GameEnd.Invoke());
 
         // OnDeath.Invoke();
         this.enabled = false;

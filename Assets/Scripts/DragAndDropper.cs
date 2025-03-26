@@ -185,6 +185,14 @@ public class DragAndDropper : MonoBehaviour
         _pickedUpDraggable.GetComponentInChildren<Collider>().isTrigger = false;
 
         // Place draggable effect?
+        if (_pickedUpDraggable.TryGetComponent(out Obstacle obstacle))
+        {
+            obstacle.OnObstaclePlaced();
+        }
+        else
+        {
+            Debug.LogWarning($"Somehow picked up {_pickedUpDraggable.name} without it having the Obstacle component!");
+        }
 
         _pickedUpObstacle = null;
         _pickedUpDraggable = null;

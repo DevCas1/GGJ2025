@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7759813152507831287}
   - component: {fileID: 6453254160635097896}
   m_Layer: 0
-  m_Name: PickkupSpawner
+  m_Name: PickupSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ddf8bfe45822224384fd0f4c3d657ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingAmount: 0
+  StartingAmount: 1
   _spawnSafeZone: {x: 8.5, y: 8.5}
   _spawnablePickups:
   - {fileID: 7704673909337486826, guid: 22fecfc72f310284cbce7aadd7d4289e, type: 3}
-  _spawnTimer: 6
+  _initialSpawnDelay: 3
+  _spawnDelay: 5

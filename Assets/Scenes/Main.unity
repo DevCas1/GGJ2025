@@ -1786,7 +1786,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.1, z: 0}
-  m_LocalScale: {x: 20, y: 0.1, z: 23}
+  m_LocalScale: {x: 20.005, y: 0.1, z: 23}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1477668004}
@@ -2302,7 +2302,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3922702766023840071, guid: 2a52ea4c1ffbef44db4013fc3134b378, type: 3}
       propertyPath: m_Name
-      value: PickkupSpawner
+      value: PickupSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 7759813152507831287, guid: 2a52ea4c1ffbef44db4013fc3134b378, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2405,10 +2405,6 @@ PrefabInstance:
     - target: {fileID: 7958983649181531953, guid: 765bd9fa2218c6043bc2f82d44e8bd74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8157512524340690760, guid: 765bd9fa2218c6043bc2f82d44e8bd74, type: 3}
-      propertyPath: far clip plane
-      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

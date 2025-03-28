@@ -13,6 +13,10 @@ PrefabInstance:
       value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
+      propertyPath: _dashCooldown
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896489521981352249, guid: fedc549832c2cd44fa949289b2b042c3, type: 3}
       propertyPath: _hamsterTransform
       value: 
       objectReference: {fileID: 2867181097886614681}

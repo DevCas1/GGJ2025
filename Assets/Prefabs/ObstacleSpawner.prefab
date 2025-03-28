@@ -174,16 +174,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingAmount: 2
-  _spawnTimer: 5
+  _initialSpawnDelay: 0
+  _spawnCooldown: 4
   _spawnableObstacles:
-  - {fileID: 188505113263865333, guid: 77499d38b42f3a34b878bb531fc04a99, type: 3}
-  - {fileID: 8522417943044392594, guid: 177f6b92d6a407b479a76efef5420391, type: 3}
-  - {fileID: 1622127746180627167, guid: 19f635efb68ec4f40ac9d6a39b73a36d, type: 3}
-  - {fileID: 2508996710439168370, guid: 90b54b28bccfe3a4d925d1f6b9eac3a0, type: 3}
-  - {fileID: 2508996710439168370, guid: 021e55f58e122c74f96b5ecd57afc839, type: 3}
-  - {fileID: 7537070217957762175, guid: 779dec33ff513fe45bd1ec82f5510bfa, type: 3}
-  - {fileID: 5715425837986236153, guid: afebee497d6fb2f41acd94858688583f, type: 3}
-  _spawnLocations:
+  - {fileID: 4211703788586871262, guid: 77499d38b42f3a34b878bb531fc04a99, type: 3}
+  - {fileID: -3391544247531201853, guid: 177f6b92d6a407b479a76efef5420391, type: 3}
+  - {fileID: 6065185544293934713, guid: 19f635efb68ec4f40ac9d6a39b73a36d, type: 3}
+  - {fileID: 5707285258790389717, guid: 90b54b28bccfe3a4d925d1f6b9eac3a0, type: 3}
+  - {fileID: -7664126219447772613, guid: 021e55f58e122c74f96b5ecd57afc839, type: 3}
+  - {fileID: -5276796583954653123, guid: 779dec33ff513fe45bd1ec82f5510bfa, type: 3}
+  - {fileID: -3979903197937703812, guid: afebee497d6fb2f41acd94858688583f, type: 3}
+  _spawnLocationTransforms:
   - {fileID: 1510772882935415079}
   - {fileID: 2062677265627091201}
   - {fileID: 1149458585088346264}

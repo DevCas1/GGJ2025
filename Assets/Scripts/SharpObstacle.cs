@@ -35,8 +35,7 @@ public class SharpObstacle : MonoBehaviour
         sequence.Append(transform.DOScale(Vector3.zero, 0.25f));
 
         transform.DOPunchPosition(damageDirection.normalized * 0.5f, 0.5f, 0, 0);
-        sequence.Play().OnComplete(() => DestroyImmediate(this));
-
-        Destroy(this);
+        // TODO: Find better way of cleanup (pooling)
+        sequence.Play().OnComplete(() => Destroy(this));
     }
 }

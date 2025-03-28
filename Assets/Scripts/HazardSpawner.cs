@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class HazardSpawner : MonoBehaviour
@@ -6,35 +7,68 @@ public class HazardSpawner : MonoBehaviour
 
     [SerializeField] private Vector2 _spawnSafeZone = new (7.5f, 7.5f);
     [SerializeField] private GameObject[] _spawnableHazards;
-    [SerializeField, Tooltip("The amount of time after a hazard spawned, before the next will spawn")]
-    private float _spawnTimer = 7.5f;
-    [SerializeField, Tooltip("This is the amount of time before the initial hazard is spawned")]
-    private float _initialSpawnTimer = 2.5f;
+    [SerializeField, Tooltip("This is the amount of time before the initial hazard is spawned"), Min(0)]
+    private float _initialSpawnDelay = 2.5f;
+    [SerializeField, Tooltip("The amount of time after a hazard spawned, before the next will spawn"), Min(float.Epsilon)]
+    private float _spawnDelay = 7.5f;
 
     private static readonly int _spawnRotationsOptions = 8;
     private static readonly int _spawnRotationIncrements = 360 / _spawnRotationsOptions;
 
-    private float _currentSpawnTimer;
+    private float _initialSpawnTimer = 0;
+    private bool _initialSpawnDone = false;
+    private float _spawnTimer;
 
     private void Start()
+    {
+        _initialSpawnTimer = _initialSpawnDelay;
+
+        if (_initialSpawnDelay > 0)
+            return;
+
+        if (StartingAmount > 0)
+            DoInitialSpawn();
+    }
+
+    private void DoInitialSpawn()
     {
         for (int index = 0; index < StartingAmount; index++)
             SpawnHazard();
 
-        _currentSpawnTimer = _spawnTimer;
+        _initialSpawnDone = true;
     }
 
     private void Update()
     {
-        _currentSpawnTimer -= Time.deltaTime;
+        if (_initialSpawnDelay > 0 && _initialSpawnDone == false)
+        {
+            if (_initialSpawnTimer > 0)
+            {
+                _initialSpawnTimer -= Time.deltaTime;
+                return;
+            }
 
-        if (_currentSpawnTimer <= 0)
+            DoInitialSpawn();
+        }
+
+        if (_spawnTimer > 0)
+            _spawnTimer -= Time.deltaTime;
+
+        if (_spawnTimer <= 0)
             SpawnHazard();
     }
 
     private void SpawnHazard()
     {
-        var newObstacle = Instantiate(_spawnableHazards[Random.Range(0, _spawnableHazards.Length)]);
+        GameObject newObstacle = Instantiate(_spawnableHazards[Random.Range(0, _spawnableHazards.Length)]);
+        Transform newObstacleTransform = newObstacle.transform;
+        Vector3 originalScale = newObstacleTransform.lossyScale;
+
+        newObstacleTransform.localScale = Vector3.zero;
+
+        Sequence scaleSequence = DOTween.Sequence();
+        scaleSequence.Append(newObstacleTransform.DOScale(originalScale * 1.2f, 0.25f));
+        scaleSequence.Append(newObstacleTransform.DOScale(originalScale, 0.1f));
 
         newObstacle.transform.SetPositionAndRotation(
             new Vector3(
@@ -50,7 +84,16 @@ public class HazardSpawner : MonoBehaviour
                 _spawnRotationIncrements * Random.Range(0, _spawnRotationsOptions),
                 0)
         );
+        scaleSequence.Play();
 
-        _currentSpawnTimer = _spawnTimer;
+        _spawnTimer = _spawnDelay;
     }
+
+#if DEBUG
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.75f);
+        Gizmos.DrawCube(Vector3.zero, new Vector3(_spawnSafeZone.x * 2, 0.01f, _spawnSafeZone.y * 2));
+    }
+#endif
 }

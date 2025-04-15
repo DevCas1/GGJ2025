@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _staminaRectOriginalPos;
     // private readonly float _staminaRectTopMax = 25;
-    private readonly float _staminaRectTopMin = -666;
+    private readonly float _staminaRectTopMin = -450;
 
     private bool _isGrounded = false;
     private int _currentHealth;

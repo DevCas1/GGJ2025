@@ -63,6 +63,6 @@ public class Obstacle : MonoBehaviour
 
         transform.DOPunchPosition(damageDirection.normalized * 0.5f, 0.5f, 0, 0);
         // TODO: Find better way of cleanup (Pooling)
-        sequence.Play().OnComplete(() => Destroy(this));
+        sequence.Play().OnComplete(() => Destroy(gameObject));
     }
 }

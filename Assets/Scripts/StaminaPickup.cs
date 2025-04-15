@@ -22,14 +22,15 @@ public class StaminaPickup : MonoBehaviour
     {
         Sequence sequence = DOTween.Sequence();
         // sequence.Append(transform.DOScale(transform.lossyScale * 1.2f, 0.1f));
-        sequence.Append(transform.DOScale(Vector3.zero, 0.25f));
+        // sequence.Append(transform.DOScale(Vector3.zero, 0.25f));
+        transform.DOScale(Vector3.zero, 0.25f).OnComplete(() => Destroy(gameObject));
         // TODO: Find better way of cleanup (pooling)
-        sequence.Play().OnComplete(() => Destroy(this));
+        // sequence.Play().OnComplete(() => Destroy(gameObject));
     }
 
     public void PickedUp()
     {
         // Destroy effects
-        Destroy(this);
+        Destroy(gameObject);
     }
 }
